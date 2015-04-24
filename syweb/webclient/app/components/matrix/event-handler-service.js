@@ -26,8 +26,8 @@ Typically, this service will store events and broadcast them to any listeners
 (e.g. controllers) via $broadcast. 
 */
 angular.module('eventHandlerService', [])
-.factory('eventHandlerService', ['matrixService', '$rootScope', '$window', '$q', '$timeout', '$filter', 'mPresence', 'notificationService', 'modelService', 'commandsService',
-function(matrixService, $rootScope, $window, $q, $timeout, $filter, mPresence, notificationService, modelService, commandsService) {
+.factory('eventHandlerService', ['matrixService', '$rootScope', '$window', '$q', '$filter', 'mPresence', 'notificationService', 'modelService', 'commandsService', '$interval',
+function(matrixService, $rootScope, $window, $q, $filter, mPresence, notificationService, modelService, commandsService, $interval) {
     // used for dedupping events 
     var eventReapMap = {
     //  room_id: { event_id: time_seen }
@@ -69,7 +69,7 @@ function(matrixService, $rootScope, $window, $q, $timeout, $filter, mPresence, n
             }
         }
         
-        $timeout(reapOldEventIds, REAP_POLL_MS);
+        $interval(reapOldEventIds, REAP_POLL_MS, 1);
     };
     reapOldEventIds();
     
